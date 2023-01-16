@@ -21,68 +21,21 @@ const signup = async (req, res) => {
       .json({ msg: "email already exist" });
   }
 
-  const verificationToken = crypto.randomBytes(2).toString("hex");
-  const hastToken = createHash(verificationToken);
-
   const user = await User.create({
     username: username,
     email: email,
     password: password,
-    verificationToken: hastToken,
   });
 
   //send Mail
   mailTransport.sendMail({
-    from: '"Visa-Bank" <VisaBank@gmail.com>', // sender address
+    from: '"Mobi-Bank" <VisaBank@gmail.com>', // sender address
     to: email, // list of receivers
-    subject: "VERIFY YOUR EMAIL ACCOUNT", // Subject line
-    html: `Hello, ${username}, kindly verify your account with this token:<h4>${verificationToken}</h4>`, // html body
+    subject: "REGISTRATION SUCCESSFUL", // Subject line
+    html: `Hello, ${username}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
   });
 
-  return res.status(StatusCodes.CREATED).json({
-    msg: "Success! Please check your email to verify account",
-    user,
-  });
-};
-
-//verify user
-const verifyEmail = async (req, res) => {
-  const { id } = req.params;
-  const { verificationToken } = req.body;
-  const user = await User.findOne({ _id: id });
-
-  if (!verificationToken) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: "Kindly input your verification token" });
-  }
-
-  if (!user) {
-    return res.status(StatusCodes.NOT_FOUND).json({ msg: "User not found" });
-  }
-
-  const hastToken = createHash(verificationToken);
-
-  if (user.verificationToken !== hastToken) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Verification Failed" });
-  }
-
-  (user.isVerified = true), (user.verified = Date.now());
-  user.verificationToken = "";
-
-  await user.save();
-
-  //send Mail
-  mailTransport.sendMail({
-    from: '"Visa-Bank" <VisaBank@gmail.com>', // sender address
-    to: user.email, // list of receivers
-    subject: "MAIL IS VERIFIED", // Subject line
-    html: `<h4> Hello, ${user.username}</h4> <h2>Congrats</h2> you are now verified,you can login now`, // html body
-  });
-
-  return res.status(StatusCodes.OK).json({ msg: "Email Verified" });
+  return res.status(StatusCodes.CREATED).json(user);
 };
 
 //user login
@@ -107,13 +60,6 @@ const login = async (req, res) => {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: "Password is not valid" });
-  }
-
-  // res.send("login successful");
-  if (!user.isVerified) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "please verify you mail" });
   }
 
   let token = user.createJWT({
@@ -156,7 +102,7 @@ const forgotPassword = async (req, res) => {
 
     // send email
     mailTransport.sendMail({
-      from: '"Visa-Bank" <VisaBank@gmail.com>', // sender address
+      from: '"Mobi-Bank" <mobibank@gmail.com>', // sender address
       to: email,
       subject: "Reset you account",
       html: `Hi, kindly reset your password with this token: <h4>${passwordToken}</h4>`,

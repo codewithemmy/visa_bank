@@ -22,12 +22,6 @@ const UserSchema = new mongoose.Schema(
       },
     },
     password: { type: String, required: true },
-    verificationToken: String,
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    verified: Date,
     passwordToken: {
       type: String,
     },

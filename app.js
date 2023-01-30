@@ -17,6 +17,7 @@ const connectDB = require("./db/connect");
 
 // routers
 const authRouter = require("./routes/authRoute");
+const userAccountRouter = require("./routes/userAccountRoute");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1", userAccountRouter);
 
 const port = process.env.PORT || 5000;
 

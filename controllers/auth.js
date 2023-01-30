@@ -6,7 +6,7 @@ const { mailTransport } = require("../utils/sendEmail");
 
 //sign up user
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
 
   if (!username || !email || !password) {
     return res
@@ -25,6 +25,7 @@ const signup = async (req, res) => {
     username: username,
     email: email,
     password: password,
+    role,
   });
 
   //send Mail

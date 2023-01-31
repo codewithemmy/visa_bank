@@ -1,6 +1,7 @@
 const UserAccount = require("../models/UserAccount");
 const User = require("../models/User");
 
+//create user
 const createUserAccount = async (req, res) => {
   const {
     userEmail,
@@ -46,6 +47,7 @@ const createUserAccount = async (req, res) => {
   return res.status(400).json({ msg: `error creating account` });
 };
 
+//edit user
 const editUserAccount = async (req, res) => {
   const { id } = req.params;
 
@@ -62,6 +64,7 @@ const editUserAccount = async (req, res) => {
   return res.status(201).json({ msg: `Account successfuly updated`, user });
 };
 
+delete user
 const deleteUserAccount = async (req, res) => {
   const { id } = req.params;
 
@@ -75,6 +78,7 @@ const deleteUserAccount = async (req, res) => {
   return res.status(201).json({ msg: `Account successfuly deleted` });
 };
 
+//get user
 const getUserAccount = async (req, res) => {
   const superAdmin = req.user;
   if (superAdmin) {
@@ -84,6 +88,7 @@ const getUserAccount = async (req, res) => {
   return res.status(400).json({ msg: `error getting userAccount` });
 };
 
+//get single user
 const singleUserAccount = async (req, res) => {
   const { id } = req.params;
   const superAdmin = req.user;

@@ -1,5 +1,6 @@
 const UserAccount = require("../models/UserAccount");
 const User = require("../models/User");
+const { populate } = require("../models/UserAccount");
 
 //create user
 const createUserAccount = async (req, res) => {
@@ -15,13 +16,13 @@ const createUserAccount = async (req, res) => {
   } = req.body;
 
   const superUser = req.user;
-
-  const generateAccount = () => {
-    let random = Math.floor(Math.random() * 100000000) + "";
-    return "MB" + random.padStart(8, "0");
-  };
-
   if (superUser) {
+    const generateAccount = () => {
+      let random = Math.floor(Math.random() * 100000000) + "";
+      return "MB" + random.padStart(8, "0");
+    };
+
+    // if (superUser) {
     const user = await User.findOne({ email: userEmail });
 
     if (!user) {
@@ -42,8 +43,13 @@ const createUserAccount = async (req, res) => {
       accountOwner: userId,
     });
 
+    user.accountNo = createAccount.accountNo;
+
+    await user.save();
+
     return res.status(201).json(createAccount);
   }
+
   return res.status(400).json({ msg: `error creating account` });
 };
 
@@ -56,7 +62,7 @@ const editUserAccount = async (req, res) => {
     return res.status(400).json({ msg: `invalid id used` });
   }
 
-  const user = await UserAccount.findByIdAndDelete({ _id: id }, req.body, {
+  const user = await UserAccount.findByIdAndUpdate({ _id: id }, req.body, {
     new: true,
     runValidators: true,
   });
@@ -64,7 +70,7 @@ const editUserAccount = async (req, res) => {
   return res.status(201).json({ msg: `Account successfuly updated`, user });
 };
 
-delete user
+delete user;
 const deleteUserAccount = async (req, res) => {
   const { id } = req.params;
 
@@ -82,7 +88,10 @@ const deleteUserAccount = async (req, res) => {
 const getUserAccount = async (req, res) => {
   const superAdmin = req.user;
   if (superAdmin) {
-    const getUserAccount = await UserAccount.find();
+    const getUserAccount = await UserAccount.find().populate(
+      "accountOwner.username"
+    );
+
     return res.status(200).json(getUserAccount);
   }
   return res.status(400).json({ msg: `error getting userAccount` });

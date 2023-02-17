@@ -5,6 +5,7 @@ const validator = require("validator");
 
 const UserSchema = new mongoose.Schema(
   {
+    accountNo: { type: String },
     username: {
       type: String,
       minlength: 3,
@@ -21,11 +22,20 @@ const UserSchema = new mongoose.Schema(
         message: "please provide a valid emailF",
       },
     },
+    firstName: { type: String },
+    lastName: { type: String },
+    state: { type: String },
+    city: { type: String },
+    address: { type: String },
+    image: { type: String },
+    zipCode: { type: Number },
+    country: { type: String },
+    mobile: { type: String },
     password: { type: String, required: true },
     passwordToken: {
       type: String,
     },
-    role: { type: String, default: "user", enum: ["super-admin", 'user'] },
+    role: { type: String, enum: ["super-admin", "user"], default: "user" },
     passwordTokenExpirationDate: {
       type: Date,
     },

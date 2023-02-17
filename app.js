@@ -4,12 +4,13 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 const express = require("express");
 const app = express();
+
 const fileUpload = require("express-fileupload");
 
 // extra security packages
-// const helmet = require('helmet');
+const helmet = require("helmet");
 const cors = require("cors");
-// const xss = require('xss-clean');
+const xss = require("xss-clean");
 // const rateLimiter = require('express-rate-limit');
 
 const connectDB = require("./db/connect");
@@ -23,12 +24,17 @@ const userAccountRouter = require("./routes/userAccountRoute");
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
+//render file upload
+app.use(fileUpload({ useTempFiles: true }));
+
 //serve exprss json
 app.use(express.json());
 app.use(cors());
+app.use(helmet());
+app.use(xss());
 
 app.get("/", (req, res) => {
-  res.send("hello");
+  res.send("this is working");
 });
 
 app.use("/api/v1/auth", authRouter);

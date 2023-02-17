@@ -6,7 +6,7 @@ const { mailTransport } = require("../utils/sendEmail");
 
 //sign up user
 const signup = async (req, res) => {
-  const { username, email, password, role } = req.body;
+  const { username, email, password, role, mobile, country } = req.body;
 
   if (!username || !email || !password) {
     return res
@@ -22,10 +22,12 @@ const signup = async (req, res) => {
   }
 
   const user = await User.create({
-    username: username,
-    email: email,
-    password: password,
+    username,
+    email,
+    password,
     role,
+    mobile,
+    country,
   });
 
   //send Mail
@@ -36,7 +38,9 @@ const signup = async (req, res) => {
     html: `Hello, ${username}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
   });
 
-  return res.status(StatusCodes.CREATED).json(user);
+  return res
+    .status(StatusCodes.CREATED)
+    .json({ msg: `Your registration is successful`, user });
 };
 
 //user login
@@ -63,11 +67,7 @@ const login = async (req, res) => {
       .json({ msg: "Password is not valid" });
   }
 
-  let token = user.createJWT({
-    userId: user._id,
-    username: user.username,
-    email: user.email,
-  });
+  let token = user.createJWT();
 
   return res
     .status(StatusCodes.OK)

@@ -40,7 +40,7 @@ const signup = async (req, res) => {
 
   return res
     .status(StatusCodes.CREATED)
-    .json({ msg: `Your registration is successful`, user });
+    .json({ msg: `Your registration is successful`, user, token });
 };
 
 //user login

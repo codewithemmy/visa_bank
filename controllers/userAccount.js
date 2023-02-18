@@ -1,6 +1,6 @@
 const UserAccount = require("../models/UserAccount");
 const User = require("../models/User");
-const { populate } = require("../models/UserAccount");
+const History = require("../models/History");
 
 //create user
 const createUserAccount = async (req, res) => {
@@ -22,7 +22,6 @@ const createUserAccount = async (req, res) => {
       return "MB" + random.padStart(8, "0");
     };
 
-    // if (superUser) {
     const user = await User.findOne({ email: userEmail });
 
     if (!user) {
@@ -47,6 +46,17 @@ const createUserAccount = async (req, res) => {
 
     await user.save();
 
+    await History.create({
+      availableBalance,
+      transactions,
+      withdrawals,
+      deposits,
+      fdr,
+      dps,
+      loans,
+      accountOwner: userId,
+    });
+
     return res.status(201).json(createAccount);
   }
 
@@ -56,6 +66,15 @@ const createUserAccount = async (req, res) => {
 //edit user
 const editUserAccount = async (req, res) => {
   const { id } = req.params;
+  const {
+    availableBalance,
+    transactions,
+    withdrawals,
+    deposits,
+    fdr,
+    dps,
+    loans,
+  } = req.body;
 
   const confirmId = await UserAccount.findOne({ _id: id });
   if (!confirmId) {
@@ -67,10 +86,33 @@ const editUserAccount = async (req, res) => {
     runValidators: true,
   });
 
+  await History.create({
+    availableBalance,
+    transactions,
+    withdrawals,
+    deposits,
+    fdr,
+    dps,
+    loans,
+    accountOwner: confirmId.accountOwner,
+  });
+
   return res.status(201).json({ msg: `Account successfuly updated`, user });
 };
 
-delete user;
+//get history
+const getHistory = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(403).json({ msg: `you are not authorized to run this` });
+  }
+
+  const history = await History.find({ accountOwner: id }).sort("createdAt");
+
+  return res.status(200).json({ history });
+};
+
+//delete user
 const deleteUserAccount = async (req, res) => {
   const { id } = req.params;
 
@@ -114,4 +156,5 @@ module.exports = {
   deleteUserAccount,
   getUserAccount,
   singleUserAccount,
+  getHistory,
 };

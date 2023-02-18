@@ -78,7 +78,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   const user = req.user;
   if (user) {
-    delete req.headers.authorization;
+    delete req.headers.authorization.split(" "[1]);
 
     return res.status(StatusCodes.OK).json({ msg: `delete successful` });
   }

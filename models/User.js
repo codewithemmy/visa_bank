@@ -10,7 +10,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       minlength: 3,
       maxlength: 30,
-      required: true,
       unique: true,
     },
     email: {
@@ -22,8 +21,8 @@ const UserSchema = new mongoose.Schema(
         message: "please provide a valid emailF",
       },
     },
-    firstName: { type: String },
-    lastName: { type: String },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     state: { type: String },
     city: { type: String },
     address: { type: String },

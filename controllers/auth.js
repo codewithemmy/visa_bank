@@ -6,9 +6,9 @@ const { mailTransport } = require("../utils/sendEmail");
 
 //sign up user
 const signup = async (req, res) => {
-  const { username, email, password, role, mobile, country } = req.body;
+  const { firstName, lastName, email, password, role, mobile, country } = req.body;
 
-  if (!username || !email || !password) {
+  if (!email || !password) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: `All fields should be filled` });
@@ -22,7 +22,8 @@ const signup = async (req, res) => {
   }
 
   const user = await User.create({
-    username,
+    firstName,
+    lastName,
     email,
     password,
     role,
@@ -35,12 +36,12 @@ const signup = async (req, res) => {
     from: '"Mobi-Bank" <VisaBank@gmail.com>', // sender address
     to: email, // list of receivers
     subject: "REGISTRATION SUCCESSFUL", // Subject line
-    html: `Hello, ${username}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
+    html: `Hello, ${firstName}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
   });
 
   return res
     .status(StatusCodes.CREATED)
-    .json({ msg: `Your registration is successful`, user, token });
+    .json({ msg: `Your registration is successful`, user });
 };
 
 //user login
@@ -50,14 +51,14 @@ const login = async (req, res) => {
   if (!email || !password) {
     return res
       .status(StatusCodes.NOT_FOUND)
-      .json({ msg: "Please provide username or password" });
+      .json({ msg: "Please provide email or password" });
   }
   const user = await User.findOne({ email });
 
   if (!user) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Invalid username or password" });
+      .json({ msg: "Invalid details" });
   }
 
   const isPasswordCorrect = await user.comparePassword(password);

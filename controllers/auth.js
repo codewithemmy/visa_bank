@@ -8,12 +8,6 @@ const { mailTransport } = require("../utils/sendEmail");
 const signup = async (req, res) => {
   const { firstName, lastName, email, password, role, mobile, country } = req.body;
 
-  if (!email || !password) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: `All fields should be filled` });
-  }
-
   const emailExist = await User.findOne({ email });
   if (emailExist) {
     return res

@@ -6,12 +6,6 @@ const validator = require("validator");
 const UserSchema = new mongoose.Schema(
   {
     accountNo: { type: String },
-    username: {
-      type: String,
-      minlength: 3,
-      maxlength: 30,
-      unique: true,
-    },
     email: {
       type: String,
       required: true,

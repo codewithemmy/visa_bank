@@ -130,9 +130,7 @@ const deleteUserAccount = async (req, res) => {
 const getUserAccount = async (req, res) => {
   const superAdmin = req.user;
   if (superAdmin) {
-    const getUserAccount = await UserAccount.find().populate(
-      "accountOwner.username"
-    );
+    const getUserAccount = await UserAccount.find({})
 
     return res.status(200).json(getUserAccount);
   }

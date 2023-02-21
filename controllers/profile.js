@@ -12,7 +12,6 @@ const updateProfile = async (req, res) => {
     return res.status(400).json({ msg: `there is no id on the params` });
   }
   const {
-    username,
     email,
     firstName,
     lastName,
@@ -37,7 +36,6 @@ const updateProfile = async (req, res) => {
   const profile = await User.findByIdAndUpdate(
     { _id: profileId },
     {
-      username,
       email,
       firstName,
       lastName,

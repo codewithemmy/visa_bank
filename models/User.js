@@ -6,6 +6,11 @@ const validator = require("validator");
 const UserSchema = new mongoose.Schema(
   {
     accountNo: { type: String },
+    firstName: { type: String },
+    lastName: { type: String },
+    state: { type: String },
+    city: { type: String },
+    address: { type: String },
     email: {
       type: String,
       required: true,
@@ -15,11 +20,6 @@ const UserSchema = new mongoose.Schema(
         message: "please provide a valid email",
       },
     },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    state: { type: String },
-    city: { type: String },
-    address: { type: String },
     image: { type: String },
     zipCode: { type: Number },
     country: { type: String },

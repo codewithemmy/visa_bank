@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const fs = require("fs");
+require("../utils/cloudinary");
 
 //require cloudinary version 2
 const cloudinary = require("cloudinary").v2;
@@ -23,13 +24,13 @@ const updateProfile = async (req, res) => {
     mobile,
   } = req.body;
 
-  const result = await cloudinary.uploader.upload(
-    req.files.image.tempFilePath,
-    {
-      use_filename: true,
-      folder: "mobi-bank",
-    }
-  );
+
+  const image = req.files.image.tempFilePath;
+  
+  const result = await cloudinary.uploader.upload(image, {
+    use_filename: true,
+    folder: "mobi-bank",
+  });
 
   fs.unlinkSync(req.files.image.tempFilePath);
 

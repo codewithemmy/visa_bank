@@ -30,6 +30,7 @@ router.route("/update-profile/:id").patch(updateProfile);
 //create contact
 router.route("/create-contact").post(createContact);
 
+//funds routes
 router.route("/fund-transfer").post(auth, fundTransfer);
 router.route("/fund-withdrawal").post(auth, fundWithdrawal);
 router.route("/fund-deposit").post(auth, fundDeposit);

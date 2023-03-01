@@ -27,10 +27,10 @@ const signup = async (req, res) => {
 
   //send Mail
   mailTransport.sendMail({
-    from: '"Mobi-Bank" <VisaBank@gmail.com>', // sender address
+    from: '"Mobi-Bank" <mobi-bank@gmail.com>', // sender address
     to: email, // list of receivers
     subject: "REGISTRATION SUCCESSFUL", // Subject line
-    html: `Hello, ${firstName}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
+    html: `<h4>Hello, ${firstName}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
   });
 
   return res

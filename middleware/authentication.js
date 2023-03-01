@@ -13,8 +13,9 @@ const auth = async (req, res, next) => {
     // attach the user to the routes
     req.user = {
       userId: payload.userId,
+      firstName: payload.firstName,
       email: payload.email,
-      mobile: payload.mobile
+      mobile: payload.mobile,
     };
     next();
   } catch (error) {

@@ -57,6 +57,7 @@ UserSchema.methods.createJWT = function () {
   return jwt.sign(
     {
       userId: this._id,
+      firstName: this.firstName,
       email: this.email,
       mobile: this.mobile,
     },

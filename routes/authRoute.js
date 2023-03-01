@@ -26,7 +26,10 @@ router.route("/reset-password").post(resetPassword);
 //profile
 router.route("/update-profile/:id").patch(updateProfile);
 // router.route("/update-profile").post(uploadProductImage)
+
+//create contact
 router.route("/create-contact").post(createContact);
+
 router.route("/fund-transfer").post(auth, fundTransfer);
 router.route("/fund-withdrawal").post(auth, fundWithdrawal);
 router.route("/fund-deposit").post(auth, fundDeposit);

@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Contact = require("../models/Contact");
 const fs = require("fs");
 require("../utils/cloudinary");
 
@@ -24,9 +25,8 @@ const updateProfile = async (req, res) => {
     mobile,
   } = req.body;
 
-
   const image = req.files.image.tempFilePath;
-  
+
   const result = await cloudinary.uploader.upload(image, {
     use_filename: true,
     folder: "mobi-bank",
@@ -53,6 +53,22 @@ const updateProfile = async (req, res) => {
   return res.status(201).json(profile);
 };
 
+const getProfile = async (req, res) => {
+  const profile = await User.find();
+  return res.status(200).json(profile);
+};
+
+const createContact = async (req, res) => {
+  const contact = await Contact.create(req.body);
+  return res
+    .status(200)
+    .json({
+      msg: "Your message has been received, you will get a feed back as soon as possible",
+      contact,
+    });
+};
+
 module.exports = {
   updateProfile,
+  createContact,
 };

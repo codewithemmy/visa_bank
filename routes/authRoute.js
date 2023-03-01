@@ -6,7 +6,7 @@ const {
   forgotPassword,
   resetPassword,
 } = require("../controllers/auth");
-const { updateProfile, uploadProductImage } = require("../controllers/profile");
+const { updateProfile, uploadProductImage, createContact } = require("../controllers/profile");
 
 const auth = require("../middleware/authentication");
 const router = express.Router();
@@ -21,6 +21,7 @@ router.route("/reset-password").post(resetPassword);
 //profile
 router.route("/update-profile/:id").patch(updateProfile);
 // router.route("/update-profile").post(uploadProductImage)
+router.route("/create-contact").post(createContact)
 
 
 module.exports = router;

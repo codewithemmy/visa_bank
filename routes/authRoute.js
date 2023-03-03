@@ -7,7 +7,11 @@ const {
   resetPassword,
 } = require("../controllers/auth");
 
-const { updateProfile, createContact } = require("../controllers/profile");
+const {
+  updateProfile,
+  createContact,
+  getAccount,
+} = require("../controllers/profile");
 const {
   fundTransfer,
   fundWithdrawal,
@@ -28,7 +32,9 @@ router.route("/update-profile/:id").patch(updateProfile);
 // router.route("/update-profile").post(uploadProductImage)
 
 //create contact
-router.route("/create-contact").post(createContact);
+
+//get account
+router.route("/create-contact").post(auth, getAccount);
 
 //funds routes
 router.route("/fund-transfer").post(auth, fundTransfer);

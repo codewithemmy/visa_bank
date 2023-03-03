@@ -60,15 +60,25 @@ const getProfile = async (req, res) => {
 
 const createContact = async (req, res) => {
   const contact = await Contact.create(req.body);
-  return res
-    .status(200)
-    .json({
-      msg: "Your message has been received, you will get a feed back as soon as possible",
-      contact,
-    });
+  return res.status(200).json({
+    msg: "Your message has been received, you will get a feed back as soon as possible",
+    contact,
+  });
+};
+
+const getAccount = async (req, res) => {
+  const user = req.user.userId;
+  if (user) {
+    const getUserAccount = await UserAccount.find({ accountOwner: user });
+
+    return res.status(200).json(getUserAccount);
+  }
+
+  return res.status(400).json({ msg: `error getting userAccount` });
 };
 
 module.exports = {
   updateProfile,
   createContact,
+  getAccount,
 };

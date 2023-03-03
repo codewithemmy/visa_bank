@@ -126,7 +126,7 @@ const deleteUserAccount = async (req, res) => {
   return res.status(201).json({ msg: `Account successfuly deleted` });
 };
 
-//get user
+//get user BY admin
 const getUserAccount = async (req, res) => {
   const superAdmin = req.user;
   if (superAdmin) {

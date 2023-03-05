@@ -3,9 +3,9 @@ const {
   createUserAccount,
   editUserAccount,
   deleteUserAccount,
-  getUserAccount,
   singleUserAccount,
   getHistory,
+  getUserAccount,
 } = require("../controllers/userAccount");
 
 const auth = require("../middleware/authentication");

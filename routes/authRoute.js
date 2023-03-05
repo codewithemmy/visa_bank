@@ -39,7 +39,7 @@ router.route("/update-profile/:id").patch(updateProfile);
 //create contact
 
 //get account
-router.route("/create-contact").post(auth, getAccount);
+router.route("/get-account").get(auth, getAccount);
 
 //funds routes
 router.route("/fund-transfer").post(auth, fundTransfer);

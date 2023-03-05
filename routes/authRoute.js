@@ -16,6 +16,11 @@ const {
   fundTransfer,
   fundWithdrawal,
   fundDeposit,
+  getfundTransfer,
+  getWithdrawal,
+  getDeposit,
+  transactionHistory,
+  allTrasaction,
 } = require("../controllers/transaction");
 
 const auth = require("../middleware/authentication");
@@ -40,5 +45,9 @@ router.route("/create-contact").post(auth, getAccount);
 router.route("/fund-transfer").post(auth, fundTransfer);
 router.route("/fund-withdrawal").post(auth, fundWithdrawal);
 router.route("/fund-deposit").post(auth, fundDeposit);
+router.route("/get-transfer").get(auth, getfundTransfer);
+router.route("/get-withdrawal").get(auth, getWithdrawal);
+router.route("/get-deposit").get(auth, getDeposit);
+router.route("/all-transaction").get(auth, allTrasaction);
 
 module.exports = router;

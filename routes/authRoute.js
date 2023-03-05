@@ -37,6 +37,7 @@ router.route("/update-profile/:id").patch(updateProfile);
 // router.route("/update-profile").post(uploadProductImage)
 
 //create contact
+router.route("/create-contact").post(createContact);
 
 //get account
 router.route("/get-account").get(auth, getAccount);

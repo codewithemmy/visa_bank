@@ -109,9 +109,7 @@ const getfundTransfer = async (req, res) => {
   if (user) {
     const transfer = await TransferHistory.find({
       accountOwner: user,
-    })
-      .populate("accountOwner.firstName")
-      .populate("accountOwner.firstName");
+    }).populate({ path: "accountOwner", select: "firstName" });
 
     return res.status(200).json({ transfer });
   }
@@ -124,9 +122,7 @@ const getWithdrawal = async (req, res) => {
   if (user) {
     const withdrawal = await WithdrawalHistory.find({
       accountOwner: user,
-    })
-      .populate("accountOwner.firstName")
-      .populate("accountOwner.firstName");
+    }).populate({ path: "accountOwner", select: "firstName" });
 
     return res.status(200).json({ withdrawal });
   }
@@ -137,9 +133,10 @@ const getWithdrawal = async (req, res) => {
 const getDeposit = async (req, res) => {
   const user = req.user.userId;
   if (user) {
-    const deposit = await DepositHistory.find({ accountOwner: user })
-      .populate("accountOwner.firstName")
-      .populate("accountOwner.firstName");
+    const deposit = await DepositHistory.find({ accountOwner: user }).populate({
+      path: "accountOwner",
+      select: "firstName",
+    });
 
     return res.status(200).json({ deposit });
   }

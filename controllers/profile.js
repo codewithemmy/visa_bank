@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Contact = require("../models/Contact");
+const UserAccount = require('../models/UserAccount')
 const fs = require("fs");
 require("../utils/cloudinary");
 
@@ -81,4 +82,5 @@ module.exports = {
   updateProfile,
   createContact,
   getAccount,
+  getProfile,
 };

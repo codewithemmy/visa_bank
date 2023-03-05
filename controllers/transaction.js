@@ -93,7 +93,7 @@ const fundDeposit = async (req, res) => {
       from: '"Mobi-Bank" <mobi-bank@gmail.com>', // sender address
       to: req.user.email, // list of receivers
       subject: "DEPOSIT SUCCESSFUL", // Subject line
-      html: `<h4>Hello, ${req.user.firstName}, your deposit of ${amount} is successful</h4>`, // html body
+      html: `<h4>Hello, ${req.user.firstName}, your deposit of is successful</h4>`, // html body
     });
 
     return res
@@ -107,7 +107,9 @@ const fundDeposit = async (req, res) => {
 const getfundTransfer = async (req, res) => {
   const user = req.user.userId;
   if (user) {
-    const transfer = await TransferHistory.find({ accountOwner: user });
+    const transfer = await TransferHistory.find({
+      accountOwner: user,
+    }).populate("accountOwner");
 
     return res.status(200).json({ transfer });
   }
@@ -118,7 +120,9 @@ const getfundTransfer = async (req, res) => {
 const getWithdrawal = async (req, res) => {
   const user = req.user.userId;
   if (user) {
-    const withdrawal = await WithdrawalHistory.find({ accountOwner: user });
+    const withdrawal = await WithdrawalHistory.find({
+      accountOwner: user,
+    }).populate("accountOwner");
 
     return res.status(200).json({ withdrawal });
   }
@@ -129,7 +133,9 @@ const getWithdrawal = async (req, res) => {
 const getDeposit = async (req, res) => {
   const user = req.user.userId;
   if (user) {
-    const deposit = await DepositHistory.find({ accountOwner: user });
+    const deposit = await DepositHistory.find({ accountOwner: user }).populate(
+      "accountOwner"
+    );
 
     return res.status(200).json({ deposit });
   }

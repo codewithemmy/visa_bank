@@ -27,7 +27,7 @@ const fundTransfer = async (req, res) => {
       from: '"Mobi-Bank" <mobi-bank@gmail.com>', // sender address
       to: req.user.email, // list of receivers
       subject: "TRANSFER SUCCESSFUL", // Subject line
-      html: `<h4>Hello, ${req.user.firstName}, you transfer of ${amount} is successful</h4>`, // html body
+      html: `<h4>Hello, ${req.user.firstName}, you transfer is successful</h4>`, // html body
     });
 
     return res
@@ -60,7 +60,7 @@ const fundWithdrawal = async (req, res) => {
       from: '"Mobi-Bank" <mobi-bank@gmail.com>', // sender address
       to: req.user.email, // list of receivers
       subject: "WITHDRAWAL SUCCESSFUL", // Subject line
-      html: `<h4>Hello, ${req.user.firstName}, your withdrawal of ${amount} is successful</h4>`, // html body
+      html: `<h4>Hello, ${req.user.firstName}, your withdrawal is successful</h4>`, // html body
     });
 
     return res
@@ -109,7 +109,9 @@ const getfundTransfer = async (req, res) => {
   if (user) {
     const transfer = await TransferHistory.find({
       accountOwner: user,
-    }).populate("accountOwner");
+    })
+      .populate("accountOwner.firstName")
+      .populate("accountOwner.firstName");
 
     return res.status(200).json({ transfer });
   }
@@ -122,7 +124,9 @@ const getWithdrawal = async (req, res) => {
   if (user) {
     const withdrawal = await WithdrawalHistory.find({
       accountOwner: user,
-    }).populate("accountOwner");
+    })
+      .populate("accountOwner.firstName")
+      .populate("accountOwner.firstName");
 
     return res.status(200).json({ withdrawal });
   }
@@ -133,9 +137,9 @@ const getWithdrawal = async (req, res) => {
 const getDeposit = async (req, res) => {
   const user = req.user.userId;
   if (user) {
-    const deposit = await DepositHistory.find({ accountOwner: user }).populate(
-      "accountOwner"
-    );
+    const deposit = await DepositHistory.find({ accountOwner: user })
+      .populate("accountOwner.firstName")
+      .populate("accountOwner.firstName");
 
     return res.status(200).json({ deposit });
   }

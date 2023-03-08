@@ -11,7 +11,7 @@ const {
   updateProfile,
   createContact,
   getAccount,
-} = require("../controllers/profile");
+} = require("../controllers/user/profile");
 const {
   fundTransfer,
   fundWithdrawal,

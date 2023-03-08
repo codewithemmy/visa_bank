@@ -6,9 +6,9 @@ const {
   singleUserAccount,
   getHistory,
   getUserAccount,
-} = require("../controllers/userAccount");
+} = require("../../controllers/admin/userAccount");
 
-const auth = require("../middleware/authentication");
+const auth = require("../../middleware/authentication");
 
 const router = express.Router();
 

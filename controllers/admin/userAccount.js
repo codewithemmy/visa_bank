@@ -1,6 +1,6 @@
-const UserAccount = require("../models/UserAccount");
-const User = require("../models/User");
-const History = require("../models/History");
+const UserAccount = require("../../models/UserAccount");
+const User = require("../../models/User");
+const History = require("../../models/History");
 
 //create user
 const createUserAccount = async (req, res) => {

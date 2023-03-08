@@ -19,7 +19,7 @@ app.use(fileUpload({ useTempFiles: true }));
 
 // routers
 const authRouter = require("./routes/authRoute");
-const userAccountRouter = require("./routes/userAccountRoute");
+const userAccountRouter = require("./routes/admin/userAccountRoute");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");

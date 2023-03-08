@@ -1,8 +1,8 @@
-const User = require("../models/User");
-const Contact = require("../models/Contact");
-const UserAccount = require('../models/UserAccount')
+const User = require("../../models/User");
+const Contact = require("../../models/Contact");
+const UserAccount = require('../../models/UserAccount')
 const fs = require("fs");
-require("../utils/cloudinary");
+require("../../utils/cloudinary");
 
 //require cloudinary version 2
 const cloudinary = require("cloudinary").v2;

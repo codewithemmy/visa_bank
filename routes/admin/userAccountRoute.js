@@ -1,5 +1,9 @@
 const express = require("express");
-const { adminCreateUser } = require("../../controllers/admin/createUser");
+const {
+  adminCreateUser,
+  backdateTransaction,
+  getTransactions,
+} = require("../../controllers/admin/createUser");
 const {
   editUserAccount,
   deleteUserAccount,
@@ -19,10 +23,9 @@ router.route("/delete-user-account/:id").delete(auth, deleteUserAccount);
 router.route("/single-user-account/:id").get(auth, singleUserAccount);
 router.route("/get-history/:id").get(auth, getHistory);
 
-
 //admin customizing user
 router.route("/admin-create-user").post(auth, adminCreateUser);
-
-
+router.route("/admin-back-date/:id").post(auth, backdateTransaction);
+router.route("/transaction-history").get(auth, getTransactions);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const UserAccount = require("../../models/UserAccount");
 const User = require("../../models/User");
 const History = require("../../models/History");
+const TransferHistory = require("../../models/TransferHistory");
 
 //admin register user
 const adminCreateUser = async (req, res) => {
@@ -9,9 +10,7 @@ const adminCreateUser = async (req, res) => {
 
   const emailExist = await User.findOne({ email });
   if (emailExist) {
-    return res
-      .status(400)
-      .json({ msg: "email already exist" });
+    return res.status(400).json({ msg: "email already exist" });
   }
 
   const user = await User.create({
@@ -58,6 +57,29 @@ const adminCreateUser = async (req, res) => {
     .json({ msg: `Your registration is successful`, user, account });
 };
 
+//backdate history
+const backdateTransaction = async (req, res) => {
+  const transactionId = req.params.id;
+  const { date } = req.body;
+  if (transactionId) {
+    console.log(transactionId);
+    const backdate = await TransferHistory.findByIdAndUpdate(
+      { _id: transactionId },
+      { date: date },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json(backdate);
+  }
+
+  return res.status(200).json({ msg: `unable to backdate date` });
+};
+
+const getTransactions = async (req, res) => {
+  const transferHistory = await TransferHistory.find({});
+  return res.status(200).json({ transferHistory });
+};
+
 //get history
 const getHistory = async (req, res) => {
   const { id } = req.params;
@@ -70,4 +92,9 @@ const getHistory = async (req, res) => {
   return res.status(200).json({ history });
 };
 
-module.exports = { adminCreateUser, adminFundTransfer, getHistory };
+module.exports = {
+  adminCreateUser,
+  getHistory,
+  backdateTransaction,
+  getTransactions,
+};

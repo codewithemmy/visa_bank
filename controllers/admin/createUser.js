@@ -1,0 +1,100 @@
+const UserAccount = require("../../models/UserAccount");
+const User = require("../../models/User");
+const History = require("../../models/History");
+
+//admin register user
+const adminCreateUser = async (req, res) => {
+  const { firstName, lastName, email, password, role, mobile, country } =
+    req.body;
+
+  const emailExist = await User.findOne({ email });
+  if (emailExist) {
+    return res
+      .status(400)
+      .json({ msg: "email already exist" });
+  }
+
+  const user = await User.create({
+    accountNo: "",
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    mobile,
+    country,
+  });
+
+  // //send Mail
+  // mailTransport.sendMail({
+  //   from: '"Mobi-Bank" <mobi-bank@gmail.com>', // sender address
+  //   to: email, // list of receivers
+  //   subject: "REGISTRATION SUCCESSFUL", // Subject line
+  //   html: `<h4>Hello, ${firstName}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
+  // });
+
+  const generateAccount = () => {
+    let random = Math.floor(Math.random() * 100000000) + "";
+    return "MB" + random.padStart(8, "0");
+  };
+
+  const account = await UserAccount.create({
+    accountNo: generateAccount(),
+    availableBalance: 0,
+    transactions: 0,
+    withdrawals: 0,
+    deposits: 0,
+    fdr: 0,
+    dps: 0,
+    loans: 0,
+    accountOwner: user._id,
+  });
+
+  const accountNumber = (user.accountNo = account.accountNo);
+  await user.save();
+
+  return res
+    .status(201)
+    .json({ msg: `Your registration is successful`, user, account });
+};
+
+
+//admin fund transfer & history creation
+const adminFundTransfer = async (req, res) => {
+  const { amount } = req.body;
+  if (amount) {
+    const userId = req.user.userId;
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(400).json({ msg: `you are not a user` });
+    }
+
+    const accountNo = user.accountNo;
+
+    await TransferHistory.create({
+      accountOwner: userId,
+      accountNo,
+      amount,
+      date: new Date(),
+    });
+
+    return res
+      .status(200)
+      .json({ msg: `your transfer of ${amount} is successful` });
+  }
+  return res.status(400).json({ msg: `Transfer is not completed ` });
+};
+
+//get history
+const getHistory = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(403).json({ msg: `you are not authorized to run this` });
+  }
+
+  const history = await History.find({ accountOwner: id }).sort("createdAt");
+
+  return res.status(200).json({ history });
+};
+
+module.exports = { adminCreateUser, adminFundTransfer, getHistory };

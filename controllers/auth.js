@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const UserAccount = require("../models/UserAccount");
 const { StatusCodes } = require("http-status-codes");
 const createHash = require("../utils/createHash");
 const crypto = require("crypto");
@@ -6,7 +7,8 @@ const { mailTransport } = require("../utils/sendEmail");
 
 //sign up user
 const signup = async (req, res) => {
-  const { firstName, lastName, email, password, role, mobile, country } = req.body;
+  const { firstName, lastName, email, password, role, mobile, country } =
+    req.body;
 
   const emailExist = await User.findOne({ email });
   if (emailExist) {
@@ -33,9 +35,26 @@ const signup = async (req, res) => {
     html: `<h4>Hello, ${firstName}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
   });
 
+  const generateAccount = () => {
+    let random = Math.floor(Math.random() * 100000000) + "";
+    return "MB" + random.padStart(8, "0");
+  };
+
+  const account = await UserAccount.create({
+    accountNo: generateAccount(),
+    availableBalance: 0,
+    transactions: 0,
+    withdrawals: 0,
+    deposits: 0,
+    fdr: 0,
+    dps: 0,
+    loans: 0,
+    accountOwner: user._id,
+  });
+
   return res
     .status(StatusCodes.CREATED)
-    .json({ msg: `Your registration is successful`, user });
+    .json({ msg: `Your registration is successful`, user, account });
 };
 
 //user login
@@ -50,9 +69,7 @@ const login = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Invalid details" });
+    return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Invalid details" });
   }
 
   const isPasswordCorrect = await user.comparePassword(password);

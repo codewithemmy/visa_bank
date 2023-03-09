@@ -12,6 +12,9 @@ const TransferHistorySchema = new mongoose.Schema(
     amount: {
       type: String,
     },
+    date: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

@@ -18,6 +18,7 @@ const signup = async (req, res) => {
   }
 
   const user = await User.create({
+    accountNo: "",
     firstName,
     lastName,
     email,
@@ -51,6 +52,9 @@ const signup = async (req, res) => {
     loans: 0,
     accountOwner: user._id,
   });
+
+  const accountNumber = (user.accountNo = account.accountNo);
+  await user.save();
 
   return res
     .status(StatusCodes.CREATED)

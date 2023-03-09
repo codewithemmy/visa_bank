@@ -21,6 +21,7 @@ const fundTransfer = async (req, res) => {
       accountOwner: userId,
       accountNo,
       amount,
+      date: new Date(),
     });
 
     mailTransport.sendMail({
@@ -54,6 +55,7 @@ const fundWithdrawal = async (req, res) => {
       accountOwner: userId,
       accountNo,
       amount,
+      date: new Date(),
     });
 
     mailTransport.sendMail({
@@ -87,6 +89,7 @@ const fundDeposit = async (req, res) => {
       accountOwner: userId,
       accountNo,
       amount,
+      date: new Date(),
     });
 
     mailTransport.sendMail({

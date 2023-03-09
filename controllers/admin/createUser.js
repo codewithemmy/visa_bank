@@ -58,33 +58,6 @@ const adminCreateUser = async (req, res) => {
     .json({ msg: `Your registration is successful`, user, account });
 };
 
-
-//admin fund transfer & history creation
-const adminFundTransfer = async (req, res) => {
-  const { amount } = req.body;
-  if (amount) {
-    const userId = req.user.userId;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({ msg: `you are not a user` });
-    }
-
-    const accountNo = user.accountNo;
-
-    await TransferHistory.create({
-      accountOwner: userId,
-      accountNo,
-      amount,
-      date: new Date(),
-    });
-
-    return res
-      .status(200)
-      .json({ msg: `your transfer of ${amount} is successful` });
-  }
-  return res.status(400).json({ msg: `Transfer is not completed ` });
-};
-
 //get history
 const getHistory = async (req, res) => {
   const { id } = req.params;

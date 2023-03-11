@@ -1,6 +1,6 @@
 const User = require("../../models/User");
 const Contact = require("../../models/Contact");
-const UserAccount = require('../../models/UserAccount')
+const UserAccount = require("../../models/UserAccount");
 const fs = require("fs");
 require("../../utils/cloudinary");
 
@@ -9,49 +9,16 @@ const cloudinary = require("cloudinary").v2;
 
 //create user
 const updateProfile = async (req, res) => {
-  const { id: profileId } = req.params;
+  if (req.params.id) {
+    const theProfile = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true, runValidators: true }
+    );
 
-  if (!profileId) {
-    return res.status(400).json({ msg: `there is no id on the params` });
+    return res.status(200).json(theProfile);
   }
-  const {
-    email,
-    firstName,
-    lastName,
-    state,
-    city,
-    address,
-    zipCode,
-    country,
-    mobile,
-  } = req.body;
-
-  const image = req.files.image.tempFilePath;
-
-  const result = await cloudinary.uploader.upload(image, {
-    use_filename: true,
-    folder: "mobi-bank",
-  });
-
-  fs.unlinkSync(req.files.image.tempFilePath);
-
-  const profile = await User.findByIdAndUpdate(
-    { _id: profileId },
-    {
-      email,
-      firstName,
-      lastName,
-      state,
-      city,
-      address,
-      zipCode,
-      country,
-      mobile,
-      image: result.secure_url,
-    },
-    { new: true, runValidators: true }
-  );
-  return res.status(201).json(profile);
+  return res.status(400).json({ msg: "unable to upate profile" });
 };
 
 const getProfile = async (req, res) => {
@@ -78,9 +45,31 @@ const getAccount = async (req, res) => {
   return res.status(400).json({ msg: `error getting userAccount` });
 };
 
+const profileImageUpload = async (req, res) => {
+  const image = req.files.image.tempFilePath;
+
+  if (req.params.id) {
+    const result = await cloudinary.uploader.upload(image, {
+      use_filename: true,
+      folder: "mobi-bank",
+    });
+
+    fs.unlinkSync(req.files.image.tempFilePath);
+    const profile = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { image: result.secure_url },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json(profile);
+  }
+  return res.status(400).json({ msg: `unable to update image` });
+};
+
 module.exports = {
   updateProfile,
   createContact,
   getAccount,
   getProfile,
+  profileImageUpload,
 };

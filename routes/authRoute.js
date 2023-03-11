@@ -11,6 +11,8 @@ const {
   updateProfile,
   createContact,
   getAccount,
+  profileImageUpload,
+  getProfile,
 } = require("../controllers/user/profile");
 const {
   fundTransfer,
@@ -34,7 +36,8 @@ router.route("/reset-password").post(resetPassword);
 
 //profile
 router.route("/update-profile/:id").patch(updateProfile);
-// router.route("/update-profile").post(uploadProductImage)
+router.route("/profile-image-upload/:id").patch(profileImageUpload);
+router.route("/get-profile").get(getProfile);
 
 //create contact
 router.route("/create-contact").post(createContact);

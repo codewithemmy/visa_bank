@@ -21,10 +21,10 @@ const UserSchema = new mongoose.Schema(
       },
     },
     image: { type: String },
-    zipCode: { type: Number },
+    zipCode: { type: String },
     country: { type: String },
     mobile: { type: String },
-    password: { type: String, required: true },
+    password: { type: String },
     passwordToken: {
       type: String,
     },

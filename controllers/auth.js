@@ -53,6 +53,9 @@ const signup = async (req, res) => {
     accountOwner: user._id,
   });
 
+  const accountNumber = (user.accountNo = account.accountNo);
+  await user.save();
+
   return res
     .status(StatusCodes.CREATED)
     .json({ msg: `Your registration is successful`, user, account });

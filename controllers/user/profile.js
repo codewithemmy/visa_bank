@@ -21,8 +21,15 @@ const updateProfile = async (req, res) => {
   return res.status(400).json({ msg: "unable to upate profile" });
 };
 
+// get profile
 const getProfile = async (req, res) => {
   const profile = await User.find();
+  return res.status(200).json(profile);
+};
+
+//get single profile
+const getSingleProfile = async (req, res) => {
+  const profile = await User.find({ _id: req.user.userId });
   return res.status(200).json(profile);
 };
 
@@ -72,4 +79,5 @@ module.exports = {
   getAccount,
   getProfile,
   profileImageUpload,
+  getSingleProfile,
 };

@@ -13,6 +13,7 @@ const {
   getAccount,
   profileImageUpload,
   getProfile,
+  getSingleProfile,
 } = require("../controllers/user/profile");
 const {
   fundTransfer,
@@ -38,6 +39,7 @@ router.route("/reset-password").post(resetPassword);
 router.route("/update-profile/:id").patch(updateProfile);
 router.route("/profile-image-upload/:id").patch(profileImageUpload);
 router.route("/get-profile").get(getProfile);
+router.route("/get-single-profile").get(getSingleProfile);
 
 //create contact
 router.route("/create-contact").post(createContact);

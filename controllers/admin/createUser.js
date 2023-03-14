@@ -1,6 +1,5 @@
-const WithdrawalHistory = require("../models/WithdrawalHistory");
-const TransferHistory = require("../../models/TransferHistory");
 const WithdrawalHistory = require("../../models/WithdrawalHistory");
+const TransferHistory = require("../../models/TransferHistory");
 const DepositHistory = require("../../models/DepositHistory");
 const UserAccount = require("../../models/UserAccount");
 const User = require("../../models/User");

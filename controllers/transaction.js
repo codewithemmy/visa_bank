@@ -22,6 +22,7 @@ const fundTransfer = async (req, res) => {
       transactionType: "Transfer",
       accountNo,
       amount,
+      date: new Date(),
     });
 
     mailTransport.sendMail({

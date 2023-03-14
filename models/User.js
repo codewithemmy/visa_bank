@@ -28,7 +28,11 @@ const UserSchema = new mongoose.Schema(
     passwordToken: {
       type: String,
     },
-    role: { type: String, enum: ["super-admin", "user"], default: "user" },
+    role: {
+      type: String,
+      enum: ["super-admin", "user", "admin"],
+      default: "user",
+    },
     passwordTokenExpirationDate: {
       type: Date,
     },
@@ -60,6 +64,7 @@ UserSchema.methods.createJWT = function () {
       firstName: this.firstName,
       email: this.email,
       mobile: this.mobile,
+      role: this.role,
     },
     process.env.JWT_SECRET,
     {

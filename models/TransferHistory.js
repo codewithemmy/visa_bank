@@ -6,14 +6,14 @@ const TransferHistorySchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
+    transactionType: {
+      type: String,
+    },
     accountNo: {
       type: String,
     },
     amount: {
       type: String,
-    },
-    date: {
-      type: Date,
     },
   },
   { timestamps: true }

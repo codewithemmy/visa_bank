@@ -19,9 +19,9 @@ const fundTransfer = async (req, res) => {
 
     await TransferHistory.create({
       accountOwner: userId,
+      transactionType: "Transfer",
       accountNo,
       amount,
-      date: new Date(),
     });
 
     mailTransport.sendMail({
@@ -53,6 +53,7 @@ const fundWithdrawal = async (req, res) => {
 
     await WithdrawalHistory.create({
       accountOwner: userId,
+      transactionType: "Withdrawal",
       accountNo,
       amount,
       date: new Date(),
@@ -87,6 +88,7 @@ const fundDeposit = async (req, res) => {
 
     await DepositHistory.create({
       accountOwner: userId,
+      transactionType: "Deposit",
       accountNo,
       amount,
       date: new Date(),
@@ -125,7 +127,7 @@ const getWithdrawal = async (req, res) => {
   if (user) {
     const withdrawal = await WithdrawalHistory.find({
       accountOwner: user,
-    }).populate({ path: "accountOwner", select: "firstName" });
+    }).populate({ path: "accountOwner", select: "firstName lastName" });
 
     return res.status(200).json({ withdrawal });
   }
@@ -138,7 +140,7 @@ const getDeposit = async (req, res) => {
   if (user) {
     const deposit = await DepositHistory.find({ accountOwner: user }).populate({
       path: "accountOwner",
-      select: "firstName",
+      select: "firstName lastName",
     });
 
     return res.status(200).json({ deposit });

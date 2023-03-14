@@ -16,6 +16,7 @@ const auth = async (req, res, next) => {
       firstName: payload.firstName,
       email: payload.email,
       mobile: payload.mobile,
+      role: payload.role,
     };
     next();
   } catch (error) {

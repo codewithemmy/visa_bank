@@ -5,6 +5,11 @@ const TransferHistory = require("../../models/TransferHistory");
 
 //admin register user
 const adminCreateUser = async (req, res) => {
+  if (req.user.role !== "super-admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
   const { firstName, lastName, email, password, role, mobile, country } =
     req.body;
 
@@ -59,13 +64,17 @@ const adminCreateUser = async (req, res) => {
 
 //backdate history
 const backdateTransaction = async (req, res) => {
+  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
   const transactionId = req.params.id;
   const { date } = req.body;
   if (transactionId) {
-    console.log(transactionId);
     const backdate = await TransferHistory.findByIdAndUpdate(
       { _id: transactionId },
-      { date: date },
+      { createdAt: date },
       { new: true, runValidators: true }
     );
 
@@ -76,12 +85,25 @@ const backdateTransaction = async (req, res) => {
 };
 
 const getTransactions = async (req, res) => {
-  const transferHistory = await TransferHistory.find({});
+  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
+  const transferHistory = await TransferHistory.find({}).populate({
+    path: "accountOwner",
+    select: "firstName lastName",
+  });
   return res.status(200).json({ transferHistory });
 };
 
 //get history
 const getHistory = async (req, res) => {
+  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
   const { id } = req.params;
   if (!id) {
     return res.status(403).json({ msg: `you are not authorized to run this` });
@@ -92,9 +114,48 @@ const getHistory = async (req, res) => {
   return res.status(200).json({ history });
 };
 
+//get single profile
+const adminGetSingleProfile = async (req, res) => {
+  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
+  if (req.user.role !== "super-admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
+  const profile = await User.find({ _id: req.params.id });
+  return res.status(200).json(profile);
+};
+
+const adminGetAllTransaction = async (req, res) => {
+  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
+  const user = req.user.userId;
+  if (user) {
+    const deposit = await DepositHistory.find({ accountOwner: req.params.id });
+    const withdrawal = await WithdrawalHistory.find({
+      accountOwner: req.params.id,
+    });
+    const transaction = await TransferHistory.find({
+      accountOwner: req.params.id,
+    });
+
+    return res.status(200).json({ deposit, withdrawal, transaction });
+  }
+  return res.status(400).json({ msg: `unable to get deposit` });
+};
+
 module.exports = {
   adminCreateUser,
   getHistory,
   backdateTransaction,
   getTransactions,
+  adminGetSingleProfile,
+  adminGetAllTransaction,
 };

@@ -6,6 +6,9 @@ const WithdrawalHistorySchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
+    transactionType: {
+      type: String,
+    },
     accountNo: {
       type: String,
     },

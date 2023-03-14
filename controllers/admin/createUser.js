@@ -7,7 +7,7 @@ const History = require("../../models/History");
 
 //admin register user
 const adminCreateUser = async (req, res) => {
-  if (req.user.role !== "super-admin") {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
     return res
       .status(403)
       .json({ msg: `you are unauthorized to perform this task` });
@@ -66,7 +66,8 @@ const adminCreateUser = async (req, res) => {
 
 //backdate history
 const backdateTransaction = async (req, res) => {
-  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+  console.log(req.user);
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
     return res
       .status(403)
       .json({ msg: `you are unauthorized to perform this task` });
@@ -76,7 +77,7 @@ const backdateTransaction = async (req, res) => {
   if (transactionId) {
     const backdate = await TransferHistory.findByIdAndUpdate(
       { _id: transactionId },
-      { createdAt: date },
+      { "createdAt": date },
       { new: true, runValidators: true }
     );
 
@@ -87,7 +88,7 @@ const backdateTransaction = async (req, res) => {
 };
 
 const getTransactions = async (req, res) => {
-  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
     return res
       .status(403)
       .json({ msg: `you are unauthorized to perform this task` });
@@ -101,7 +102,7 @@ const getTransactions = async (req, res) => {
 
 //get history
 const getHistory = async (req, res) => {
-  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
     return res
       .status(403)
       .json({ msg: `you are unauthorized to perform this task` });
@@ -118,12 +119,7 @@ const getHistory = async (req, res) => {
 
 //get single profile
 const adminGetSingleProfile = async (req, res) => {
-  if (req.user.role !== "super-admin" || req.user.role !== "admin") {
-    return res
-      .status(403)
-      .json({ msg: `you are unauthorized to perform this task` });
-  }
-  if (req.user.role !== "super-admin") {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
     return res
       .status(403)
       .json({ msg: `you are unauthorized to perform this task` });
@@ -155,6 +151,11 @@ const adminGetAllTransaction = async (req, res) => {
 
 //get transfer history
 const adminGetfundTransfer = async (req, res) => {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
   const user = req.user.userId;
   if (user) {
     const transfer = await TransferHistory.find({
@@ -168,6 +169,11 @@ const adminGetfundTransfer = async (req, res) => {
 
 //get Withdrawal history
 const adminGetSingletWithdrawal = async (req, res) => {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
   const user = req.user.userId;
   if (user) {
     const withdrawal = await WithdrawalHistory.find({
@@ -181,6 +187,11 @@ const adminGetSingletWithdrawal = async (req, res) => {
 
 //get deposit history
 const adminGetSingleDeposit = async (req, res) => {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
   const user = req.user.userId;
   if (user) {
     const deposit = await DepositHistory.find({

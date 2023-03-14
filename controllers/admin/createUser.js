@@ -1,7 +1,10 @@
+const WithdrawalHistory = require("../models/WithdrawalHistory");
+const TransferHistory = require("../../models/TransferHistory");
+const WithdrawalHistory = require("../../models/WithdrawalHistory");
+const DepositHistory = require("../../models/DepositHistory");
 const UserAccount = require("../../models/UserAccount");
 const User = require("../../models/User");
 const History = require("../../models/History");
-const TransferHistory = require("../../models/TransferHistory");
 
 //admin register user
 const adminCreateUser = async (req, res) => {
@@ -151,6 +154,48 @@ const adminGetAllTransaction = async (req, res) => {
   return res.status(400).json({ msg: `unable to get deposit` });
 };
 
+//get transfer history
+const adminGetfundTransfer = async (req, res) => {
+  const user = req.user.userId;
+  if (user) {
+    const transfer = await TransferHistory.find({
+      accountOwner: req.params.id,
+    }).populate({ path: "accountOwner", select: "firstName lastName" });
+
+    return res.status(200).json({ transfer });
+  }
+  return res.status(400).json({ msg: `unable to get transfer` });
+};
+
+//get Withdrawal history
+const adminGetSingletWithdrawal = async (req, res) => {
+  const user = req.user.userId;
+  if (user) {
+    const withdrawal = await WithdrawalHistory.find({
+      accountOwner: req.params.id,
+    }).populate({ path: "accountOwner", select: "firstName lastName" });
+
+    return res.status(200).json({ withdrawal });
+  }
+  return res.status(400).json({ msg: `unable to get withdrawal` });
+};
+
+//get deposit history
+const adminGetSingleDeposit = async (req, res) => {
+  const user = req.user.userId;
+  if (user) {
+    const deposit = await DepositHistory.find({
+      accountOwner: req.params.id,
+    }).populate({
+      path: "accountOwner",
+      select: "firstName lastName",
+    });
+
+    return res.status(200).json({ deposit });
+  }
+  return res.status(400).json({ msg: `unable to get deposit` });
+};
+
 module.exports = {
   adminCreateUser,
   getHistory,
@@ -158,4 +203,7 @@ module.exports = {
   getTransactions,
   adminGetSingleProfile,
   adminGetAllTransaction,
+  adminGetfundTransfer,
+  adminGetSingletWithdrawal,
+  adminGetSingleDeposit,
 };

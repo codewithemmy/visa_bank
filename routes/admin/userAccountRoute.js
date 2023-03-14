@@ -5,6 +5,9 @@ const {
   getTransactions,
   adminGetSingleProfile,
   adminGetAllTransaction,
+  adminGetfundTransfer,
+  adminGetSingleDeposit,
+  adminGetSingletWithdrawal,
 } = require("../../controllers/admin/createUser");
 const {
   editUserAccount,
@@ -32,5 +35,12 @@ router.route("/admin-get-profile/:id").get(auth, adminGetSingleProfile);
 router
   .route("/admin-get-all-user-transaction/:id")
   .get(auth, adminGetAllTransaction);
+router.route("/admin-get-fund-transfer/:id").get(auth, adminGetfundTransfer);
+router
+  .route("/admin-get-deposit-transfer/:id")
+  .get(auth, adminGetSingleDeposit);
+router
+  .route("/admin-get-withdrawal-transfer/:id")
+  .get(auth, adminGetSingletWithdrawal);
 
 module.exports = router;

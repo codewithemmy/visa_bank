@@ -8,6 +8,9 @@ const {
   adminGetfundTransfer,
   adminGetSingleDeposit,
   adminGetSingletWithdrawal,
+  backdateTransfer,
+  backdateWithdrawal,
+  backdateDeposit,
 } = require("../../controllers/admin/createUser");
 const {
   editUserAccount,
@@ -29,7 +32,9 @@ router.route("/get-history/:id").get(auth, getHistory);
 
 //admin customizing user
 router.route("/admin-create-user").post(auth, adminCreateUser);
-router.route("/admin-back-date/:id").post(auth, backdateTransaction);
+router.route("/admin-backdate-transfer/:id").post(auth, backdateTransfer);
+router.route("/admin-backdate-deposit/:id").post(auth, backdateDeposit);
+router.route("/admin-backdate-withdrawal/:id").post(auth, backdateWithdrawal);
 router.route("/transaction-history").get(auth, getTransactions);
 router.route("/admin-get-profile/:id").get(auth, adminGetSingleProfile);
 router

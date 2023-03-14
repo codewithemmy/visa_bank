@@ -64,9 +64,8 @@ const adminCreateUser = async (req, res) => {
     .json({ msg: `Your registration is successful`, user, account });
 };
 
-//backdate history
-const backdateTransaction = async (req, res) => {
-  console.log(req.user);
+// //backdate history
+const backdateTransfer = async (req, res) => {
   if (!req.user.role == "super-admin" || !req.user.role == "admin") {
     return res
       .status(403)
@@ -77,7 +76,49 @@ const backdateTransaction = async (req, res) => {
   if (transactionId) {
     const backdate = await TransferHistory.findByIdAndUpdate(
       { _id: transactionId },
-      { "createdAt": date },
+      { $set: { date: date } },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json(backdate);
+  }
+
+  return res.status(200).json({ msg: `unable to backdate date` });
+};
+// //backdate deposit
+const backdateDeposit = async (req, res) => {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
+  const transactionId = req.params.id;
+  const { date } = req.body;
+  if (transactionId) {
+    const backdate = await DepositHistory.findByIdAndUpdate(
+      { _id: transactionId },
+      { $set: { date: date } },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json(backdate);
+  }
+
+  return res.status(200).json({ msg: `unable to backdate date` });
+};
+// //backdate deposit
+const backdateWithdrawal = async (req, res) => {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
+  const transactionId = req.params.id;
+  const { date } = req.body;
+  if (transactionId) {
+    const backdate = await WithdrawalHistory.findByIdAndUpdate(
+      { _id: transactionId },
+      { $set: { date: date } },
       { new: true, runValidators: true }
     );
 
@@ -209,11 +250,13 @@ const adminGetSingleDeposit = async (req, res) => {
 module.exports = {
   adminCreateUser,
   getHistory,
-  backdateTransaction,
+  backdateTransfer,
   getTransactions,
   adminGetSingleProfile,
   adminGetAllTransaction,
   adminGetfundTransfer,
   adminGetSingletWithdrawal,
   adminGetSingleDeposit,
+  backdateDeposit,
+  backdateWithdrawal,
 };

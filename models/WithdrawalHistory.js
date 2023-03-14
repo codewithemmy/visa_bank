@@ -12,6 +12,9 @@ const WithdrawalHistorySchema = new mongoose.Schema(
     accountNo: {
       type: String,
     },
+    date: {
+      type: Date,
+    },
     amount: {
       type: String,
     },

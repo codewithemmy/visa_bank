@@ -112,7 +112,7 @@ const getfundTransfer = async (req, res) => {
   if (user) {
     const transfer = await TransferHistory.find({
       accountOwner: user,
-    }).populate({ path: "accountOwner", select: "firstName" });
+    }).populate({ path: "accountOwner", select: "firstName lastName" });
 
     return res.status(200).json({ transfer });
   }

@@ -38,8 +38,8 @@ router.route("/reset-password").post(resetPassword);
 //profile
 router.route("/update-profile/:id").patch(updateProfile);
 router.route("/profile-image-upload/:id").patch(profileImageUpload);
-router.route("/get-profile").get(getProfile);
-router.route("/get-single-profile").get(getSingleProfile);
+router.route("/get-profile").get(auth, getProfile);
+router.route("/get-single-profile").get(auth, getSingleProfile);
 
 //create contact
 router.route("/create-contact").post(createContact);

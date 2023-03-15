@@ -29,6 +29,7 @@ const getProfile = async (req, res) => {
 
 //get single profile
 const getSingleProfile = async (req, res) => {
+  console.log(req.user);
   const profile = await User.find({ _id: req.user.userId });
   return res.status(200).json(profile);
 };

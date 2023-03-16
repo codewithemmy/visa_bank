@@ -166,10 +166,39 @@ const resetPassword = async (req, res) => {
     .json({ msg: "your password is sucessfully reset" });
 };
 
+//reset password
+const changePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "new or password missing" });
+  }
+  const user = await User.findOne({ email: req.user.email });
+
+  if (user) {
+    const isPasswordCorrect = await user.comparePassword(oldPassword);
+    if (!isPasswordCorrect) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: "Old Password is not valid" });
+    }
+
+    user.password = newPassword;
+    user.passwordToken = null;
+    user.passwordTokenExpirationDate = null;
+    await user.save();
+
+    return res.status(200).json({ msg: "your password is sucessfully reset" });
+  }
+  return res.status(400).json({ msg: "unable to change password" });
+};
+
 module.exports = {
   signup,
   login,
   logout,
   forgotPassword,
   resetPassword,
+  changePassword,
 };

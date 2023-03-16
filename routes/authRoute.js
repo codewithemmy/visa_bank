@@ -5,6 +5,7 @@ const {
   logout,
   forgotPassword,
   resetPassword,
+  changePassword,
 } = require("../controllers/auth");
 
 const {
@@ -34,6 +35,7 @@ router.route("/login").post(login);
 router.route("/logout").delete(auth, logout);
 router.route("/forgot-password").post(forgotPassword);
 router.route("/reset-password").post(resetPassword);
+router.route("/change-password").patch(auth, changePassword);
 
 //profile
 router.route("/update-profile/:id").patch(updateProfile);

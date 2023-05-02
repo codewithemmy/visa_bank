@@ -14,7 +14,7 @@ const signup = async (req, res) => {
   if (emailExist) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "email already exist" });
+      .json({ msg: "email is already assigned to another user" });
   }
 
   const user = await User.create({

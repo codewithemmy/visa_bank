@@ -31,14 +31,6 @@ const adminCreateUser = async (req, res) => {
     country,
   });
 
-  // //send Mail
-  // mailTransport.sendMail({
-  //   from: '"Mobi-Bank" <mobi-bank@gmail.com>', // sender address
-  //   to: email, // list of receivers
-  //   subject: "REGISTRATION SUCCESSFUL", // Subject line
-  //   html: `<h4>Hello, ${firstName}, You have successfully registered with MobiBank, Welcome on board</h4>`, // html body
-  // });
-
   const generateAccount = () => {
     let random = Math.floor(Math.random() * 100000000) + "";
     return "MB" + random.padStart(8, "0");
@@ -64,6 +56,20 @@ const adminCreateUser = async (req, res) => {
     .json({ msg: `Your registration is successful`, user, account });
 };
 
+//admin delete user
+const adminDeleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  const confirmId = await User.findOne({ _id: id });
+  if (!confirmId) {
+    return res.status(400).json({ msg: `invalid id used` });
+  }
+
+  const user = await User.findByIdAndRemove({ _id: id });
+
+  return res.status(201).json({ msg: `Account successfuly deleted` });
+};
+
 // //backdate history
 const backdateTransfer = async (req, res) => {
   if (!req.user.role == "super-admin" || !req.user.role == "admin") {
@@ -85,6 +91,7 @@ const backdateTransfer = async (req, res) => {
 
   return res.status(200).json({ msg: `unable to backdate date` });
 };
+
 // //backdate deposit
 const backdateDeposit = async (req, res) => {
   if (!req.user.role == "super-admin" || !req.user.role == "admin") {
@@ -249,6 +256,7 @@ const adminGetSingleDeposit = async (req, res) => {
 
 module.exports = {
   adminCreateUser,
+  adminDeleteUser,
   getHistory,
   backdateTransfer,
   getTransactions,

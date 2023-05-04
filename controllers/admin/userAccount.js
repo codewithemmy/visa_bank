@@ -51,7 +51,7 @@ const getHistory = async (req, res) => {
   return res.status(200).json({ history });
 };
 
-//delete user
+//delete user account
 const deleteUserAccount = async (req, res) => {
   const { id } = req.params;
 

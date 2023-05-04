@@ -33,7 +33,7 @@ router.route("/get-history/:id").get(auth, getHistory);
 
 //admin customizing user
 router.route("/admin-create-user").post(auth, adminCreateUser);
-router.route("/admin-delete-user/:id").delete(adminDeleteUser);
+router.route("/admin-delete-user/:id").delete(auth, adminDeleteUser);
 router.route("/admin-backdate-transfer/:id").post(auth, backdateTransfer);
 router.route("/admin-backdate-deposit/:id").post(auth, backdateDeposit);
 router.route("/admin-backdate-withdrawal/:id").post(auth, backdateWithdrawal);

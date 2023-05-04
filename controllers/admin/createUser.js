@@ -58,6 +58,11 @@ const adminCreateUser = async (req, res) => {
 
 //admin delete user
 const adminDeleteUser = async (req, res) => {
+  if (!req.user.role == "super-admin" || !req.user.role == "admin") {
+    return res
+      .status(403)
+      .json({ msg: `you are unauthorized to perform this task` });
+  }
   const { id } = req.params;
 
   const confirmId = await User.findOne({ _id: id });

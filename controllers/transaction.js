@@ -29,7 +29,7 @@ const fundTransfer = async (req, res) => {
       from: '"Mobi-Bank" <mobi-bank@gmail.com>', // sender address
       to: req.user.email, // list of receivers
       subject: "TRANSFER SUCCESSFUL", // Subject line
-      html: `<h4>Hello, ${req.user.firstName}, you transfer is successful</h4>`, // html body
+      html: `<h4>Hello, ${req.user.firstName}, your transfer is successful</h4>`, // html body
     });
 
     return res
